@@ -308,7 +308,7 @@ export default function App() {
     }
     txt += `----------------------------\n`;
     txt += `Net Total:     ₹${result.totalInvoice.toFixed(0)}\n\n`;
-    txt += `Phulkeshwar Mahto | phulkeshwarmahto@gmail.com\n`;
+    txt += `Phulkeshwar Mahto | phulkeshwar.e@gmail.com\n`;
     txt += `Built for Digital Heroes: https://digitalheroesco.com`;
 
     navigator.clipboard.writeText(txt).then(() => {
@@ -341,7 +341,7 @@ export default function App() {
         </div>
         <div className="author-chip">
           By <strong>Phulkeshwar Mahto</strong> &nbsp;·&nbsp; 
-          <a href="mailto:phulkeshwarmahto@gmail.com">phulkeshwarmahto@gmail.com</a>
+          <a href="mailto:phulkeshwar.e@gmail.com">phulkeshwar.e@gmail.com</a>
         </div>
       </header>
 
@@ -836,7 +836,7 @@ export default function App() {
       <footer>
         <p className="footer-author">
           Built by <strong>Phulkeshwar Mahto</strong> &nbsp;·&nbsp; 
-          <a href="mailto:phulkeshwarmahto@gmail.com">phulkeshwarmahto@gmail.com</a>
+          <a href="mailto:phulkeshwar.e@gmail.com">phulkeshwar.e@gmail.com</a>
           &nbsp;·&nbsp; B.Tech CSE · NIAMT Ranchi · Founder, Garam Softwares
         </p>
         <a className="dh-btn" href="https://digitalheroesco.com" target="_blank" rel="noopener noreferrer">
