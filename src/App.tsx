@@ -59,6 +59,67 @@ export default function App() {
   const [animate, setAnimate] = useState<boolean>(false);
   const [copyText, setCopyText] = useState<string>('⎘ Copy');
 
+  // FAQ Active Accordion
+  const [faqActive, setFaqActive] = useState<number | null>(null);
+  const toggleFaq = (index: number) => {
+    setFaqActive(faqActive === index ? null : index);
+  };
+
+  // Dynamic FAQ JSON-LD Injection for deep SEO
+  useEffect(() => {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the difference between CGST, SGST, and IGST?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For intra-state supplies (within the same state), Central GST (CGST) and State GST (SGST) are levied equally. For inter-state supplies (between different states or exports), Integrated GST (IGST) is levied as a single combined tax."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an HSN or SAC code?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "HSN (Harmonized System of Nomenclature) is a 6-to-8 digit code system used to classify goods for tax categorization. SAC (Services Accounting Code) is a similar system used to classify services under Indian GST."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does export under LUT work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "LUT (Letter of Undertaking) allows registered exporters to export goods or services without paying IGST upfront. When you toggle the LUT option, the tax rate is zero-rated (0% GST) on exports."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between inclusive and exclusive GST calculation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Exclusive GST calculates tax on top of the base price (Total = Base + Base*Tax). Inclusive GST extracts the tax amount from a combined total price (Base = Total / (1 + Tax Rate) and Tax = Total - Base)."
+          }
+        }
+      ]
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'faq-jsonld';
+    script.innerHTML = JSON.stringify(faqSchema);
+    document.head.appendChild(script);
+
+    return () => {
+      const existingScript = document.getElementById('faq-jsonld');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, []);
+
   // Trigger calculations on state changes
   useEffect(() => {
     runCalculations();
@@ -729,6 +790,46 @@ export default function App() {
             </div>
           </div>
         )}
+
+        {/* FAQ SECTION */}
+        <div className="card faq-card" style={{ gridColumn: 'span 2', marginTop: '24px' }}>
+          <div className="card-title">❓ Frequently Asked Questions (FAQ)</div>
+          <div className="faq-list">
+            {[
+              {
+                q: "What is the difference between CGST, SGST, and IGST?",
+                a: "For intra-state supplies (within the same state), Central GST (CGST) and State GST (SGST) are levied equally. For inter-state supplies (between different states or exports), Integrated GST (IGST) is levied as a single combined tax."
+              },
+              {
+                q: "What is an HSN or SAC code?",
+                a: "HSN (Harmonized System of Nomenclature) is a 6-to-8 digit code system used to classify goods for tax categorization. SAC (Services Accounting Code) is a similar system used to classify services under Indian GST."
+              },
+              {
+                q: "How does export under LUT work?",
+                a: "LUT (Letter of Undertaking) allows registered exporters to export goods or services without paying IGST upfront. When you toggle the LUT option, the tax rate is zero-rated (0% GST) on exports."
+              },
+              {
+                q: "What is the difference between inclusive and exclusive GST calculation?",
+                a: "Exclusive GST calculates tax on top of the base price (Total = Base + Base*Tax). Inclusive GST extracts the tax amount from a combined total price (Base = Total / (1 + Tax Rate) and Tax = Total - Base)."
+              }
+            ].map((item, index) => (
+              <div key={index} className={`faq-item ${faqActive === index ? 'active' : ''}`}>
+                <button
+                  type="button"
+                  className="faq-question"
+                  onClick={() => toggleFaq(index)}
+                  aria-expanded={faqActive === index}
+                >
+                  <span>{item.q}</span>
+                  <span className="faq-icon">{faqActive === index ? '−' : '+'}</span>
+                </button>
+                <div className="faq-answer">
+                  <p>{item.a}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </main>
 
       {/* FOOTER */}

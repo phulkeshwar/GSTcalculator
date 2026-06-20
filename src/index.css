@@ -777,3 +777,70 @@ footer {
   color: var(--text-sec);
 }
 
+/* ── FAQ ACCORDION STYLES ── */
+.faq-card {
+  margin-top: 24px;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+  overflow: hidden;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.faq-item:hover {
+  border-color: var(--accent);
+}
+
+.faq-item.active {
+  border-color: var(--accent);
+  background: rgba(245, 166, 35, 0.03);
+}
+
+.faq-question {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.faq-icon {
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin-left: 12px;
+  transition: transform 0.2s;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out, padding 0.2s ease-out;
+  padding: 0 16px;
+  color: var(--text-sec);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 300px;
+  padding-bottom: 16px;
+}
+
