@@ -127,15 +127,15 @@ header {
 /* ── MAIN LAYOUT ── */
 .main {
   flex: 1;
-  max-width: 960px;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 20px 60px;
+  padding: 0 406px 60px;
 }
 
 .calculator-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
   align-items: start;
 }
@@ -151,7 +151,7 @@ header {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 28px;
+  padding: 20px;
   box-shadow: var(--shadow);
 }
 
