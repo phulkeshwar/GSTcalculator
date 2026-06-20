@@ -686,3 +686,94 @@ footer {
 .pulse {
   animation: pulse-accent 0.6s ease;
 }
+
+/* ── ADVANCED ITEMIZED TABLES ── */
+.item-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.item-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  color: var(--text-sec);
+  padding: 8px 4px;
+  text-transform: uppercase;
+}
+
+.item-table td {
+  padding: 8px 4px;
+}
+
+.item-row-input {
+  background: var(--bg) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: 6px !important;
+  color: var(--text) !important;
+  padding: 8px 10px !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 0.88rem !important;
+  width: 100%;
+  outline: none;
+}
+
+.item-row-input:focus {
+  border-color: var(--accent) !important;
+}
+
+.btn-add-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.btn-add-item:hover {
+  background: var(--surface3);
+  border-color: var(--accent);
+}
+
+.btn-remove-row {
+  background: transparent;
+  border: none;
+  color: #EF4444;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 4px 8px;
+}
+
+/* LUT Checkbox custom wrap */
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.checkbox-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-sec);
+}
+
