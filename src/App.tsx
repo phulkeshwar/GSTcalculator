@@ -455,12 +455,12 @@ export default function App() {
             </label>
 
             {/* Itemized Grid Table */}
-            <div style={{ overflowX: 'auto' }}>
-              <table className="item-table">
+            <div style={{ overflowX: 'auto', width: '100%' }}>
+              <table className="item-table" style={{ minWidth: '650px' }}>
                 <thead>
                   <tr>
-                    <th>Desc</th>
-                    <th style={{ width: '130px' }}>HSN</th>
+                    <th style={{ minWidth: '220px' }}>Desc</th>
+                    <th style={{ width: '150px' }}>HSN</th>
                     <th style={{ width: '70px' }}>Qty</th>
                     <th style={{ width: '110px' }}>Rate (₹)</th>
                     <th style={{ width: '90px' }}>Tax %</th>
@@ -474,6 +474,7 @@ export default function App() {
                         <input
                           type="text"
                           className="item-row-input"
+                          placeholder="e.g. Software Consulting"
                           value={item.desc}
                           onChange={(e) => updateItemCell(item.id, 'desc', e.target.value)}
                         />
@@ -497,6 +498,7 @@ export default function App() {
                           type="number"
                           className="item-row-input"
                           min="1"
+                          placeholder="1"
                           value={item.qty || ''}
                           onChange={(e) => updateItemCell(item.id, 'qty', parseInt(e.target.value) || 0)}
                         />
@@ -506,6 +508,7 @@ export default function App() {
                           type="number"
                           className="item-row-input"
                           min="0"
+                          placeholder="Rate"
                           value={item.rate || ''}
                           onChange={(e) => updateItemCell(item.id, 'rate', parseFloat(e.target.value) || 0)}
                         />
