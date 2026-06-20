@@ -76,6 +76,17 @@ Since this is a client-side static web application, it can be hosted directly on
 
 ---
 
+## Future Enhancements & Advanced Real-World Features
+
+To transition this standalone calculator into a production-ready enterprise invoicing solution, the following enhancements are planned:
+
+*   **Multi-Item Invoice Support (Itemized Billing)**: Allow inputting multiple items/services in a tabular structure with independent GST tax slabs (e.g. 5%, 12%, 18%, 28%) and consolidating them in the invoice.
+    *   *Real-Life Example*: A developer bills a client for custom consulting services (18% GST) and a mechanical keyboard hardware component (28% GST) in a single unified invoice.
+*   **HSN/SAC Code Autocomplete Directory**: Implement a lookup list matching tax rates to standard HSN (goods) or SAC (services) codes for Indian tax compliance.
+    *   *Real-Life Example*: A software consultant enters "Software" and the tool auto-populates SAC code `998313` with the default 18% GST rate.
+*   **LUT / Special Economic Zone (SEZ) Zero-Rated Invoices**: Add specific options to handle export invoices where zero-rate taxes or Letter of Undertaking (LUT) filings apply.
+    *   *Real-Life Example*: A freelancer exports code services to a US client, auto-generating a zero-tax export invoice mentioning the LUT reference.
+
 ## Submission Details
 *   **Developer**: Phulkeshwar Mahto
 *   **Email**: [phulkeshwarmahto@gmail.com](mailto:phulkeshwarmahto@gmail.com)
