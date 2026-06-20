@@ -317,6 +317,37 @@ export default function App() {
     });
   };
 
+  const handleDownload = () => {
+    if (!result) return;
+    let txt = `GST Calculation Invoice Summary\n----------------------------\n`;
+    txt += `Total Taxable: ₹${result.totalTaxable.toFixed(0)}\n`;
+    if (result.isExportLUT) {
+      txt += `Zero-Rated (LUT Export)\n`;
+    } else {
+      txt += `Total GST Amt: ₹${result.totalGst.toFixed(0)}\n`;
+      if (result.gstType === 'intra') {
+        txt += `CGST:          ₹${result.cgst.toFixed(0)}\n`;
+        txt += `SGST:          ₹${result.sgst.toFixed(0)}\n`;
+      } else {
+        txt += `IGST:          ₹${result.igst.toFixed(0)}\n`;
+      }
+    }
+    txt += `----------------------------\n`;
+    txt += `Net Total:     ₹${result.totalInvoice.toFixed(0)}\n\n`;
+    txt += `Phulkeshwar Mahto | phulkeshwar.e@gmail.com\n`;
+    txt += `Built for Digital Heroes: https://digitalheroesco.com`;
+
+    const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'gst_invoice_report.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const showToast = (msg: string) => {
     const el = document.getElementById('toast-banner');
     if (el) {
@@ -640,6 +671,9 @@ export default function App() {
                   <button type="button" className="tool-btn" onClick={handleCopy}>
                     {copyText}
                   </button>
+                  <button type="button" className="tool-btn" onClick={handleDownload} style={{ background: 'var(--accent)', color: '#fff' }}>
+                    💾 Download
+                  </button>
                 </div>
               </div>
             )}
@@ -664,6 +698,9 @@ export default function App() {
                   Invoice Sheet
                 </div>
                 <div className="tools-row" style={{ margin: 0 }}>
+                  <button type="button" className="tool-btn" onClick={handleDownload}>
+                    💾 Download Invoice
+                  </button>
                   <button type="button" className="tool-btn print-btn" onClick={() => window.print()}>
                     🖨 Print Invoice PDF
                   </button>
