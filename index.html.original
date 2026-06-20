@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GST Invoice Calculator — Free & Instant</title>
+  <meta name="description" content="Free GST calculator for India. Calculate GST amount, CGST, SGST, IGST and total invoice value instantly. No signup required." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0F1B2D;
+      --surface:   #162236;
+      --surface2:  #1E3050;
+      --accent:    #F5A623;
+      --accent-dim:#B87B19;
+      --text:      #FFFFFF;
+      --text-sec:  #8CA0B8;
+      --text-mute: #4A6080;
+      --green:     #22C55E;
+      --border:    #243650;
+      --radius:    14px;
+      --shadow:    0 4px 32px rgba(0,0,0,0.4);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-badge {
+      background: var(--accent);
+      color: #0F1B2D;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      letter-spacing: 0.05em;
+    }
+    .author-chip {
+      font-size: 0.8rem;
+      color: var(--text-sec);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 99px;
+    }
+    .author-chip a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 56px 24px 40px;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      font-size: 1rem;
+      color: var(--text-sec);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .main {
+      flex: 1;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 680px) {
+      .calculator-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 22px;
+    }
+
+    /* ── FORM ── */
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-sec);
+      margin-bottom: 7px;
+    }
+    .field input, .field select {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .field input:focus, .field select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(245,166,35,0.15);
+    }
+    .field input::placeholder { color: var(--text-mute); }
+
+    .prefix-wrap { position: relative; }
+    .prefix-wrap .prefix {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--accent);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      pointer-events: none;
+    }
+    .prefix-wrap input { padding-left: 28px; }
+
+    .toggle-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .toggle-btn {
+      flex: 1;
+      padding: 9px 4px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-sec);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-align: center;
+    }
+    .toggle-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0F1B2D;
+    }
+
+    .gst-rate-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .rate-btn {
+      padding: 10px 4px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-sec);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-align: center;
+    }
+    .rate-btn.active {
+      background: var(--surface2);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .calc-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #0F1B2D;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: opacity 0.18s, transform 0.12s;
+      margin-top: 4px;
+    }
+    .calc-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .calc-btn:active { transform: translateY(0); }
+
+    /* ── RESULTS ── */
+    .result-panel { position: relative; }
+
+    .result-main {
+      background: linear-gradient(135deg, #1a2e4a 0%, #0f2040 100%);
+      border: 1px solid var(--accent-dim);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .result-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .result-amount {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 6vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      transition: color 0.3s;
+    }
+    .result-amount.flash { color: var(--accent); }
+
+    .breakdown-list { list-style: none; }
+    .breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .breakdown-item:last-child { border-bottom: none; }
+    .breakdown-item .b-label { color: var(--text-sec); }
+    .breakdown-item .b-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .breakdown-item.highlight .b-label { color: var(--text); font-weight: 500; }
+    .breakdown-item.highlight .b-value { color: var(--green); font-size: 1rem; }
+
+    .tag-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: var(--surface2);
+      color: var(--text-sec);
+      border: 1px solid var(--border);
+    }
+    .tag.active-tag {
+      background: rgba(245,166,35,0.12);
+      color: var(--accent);
+      border-color: var(--accent-dim);
+    }
+
+    /* ── INVOICE PREVIEW ── */
+    .invoice-section {
+      margin-top: 20px;
+      display: none;
+    }
+    .invoice-section.visible { display: block; }
+
+    .invoice-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .invoice-header {
+      background: var(--accent);
+      color: #0F1B2D;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .invoice-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .invoice-header .inv-no {
+      font-size: 0.8rem;
+      font-weight: 600;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+    .invoice-date {
+      text-align: right;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .invoice-body { padding: 24px; }
+    .invoice-parties {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .party-block h4 {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-sec);
+      margin-bottom: 6px;
+    }
+    .party-block p {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .party-block .gstin {
+      font-size: 0.75rem;
+      color: var(--text-sec);
+      margin-top: 3px;
+      font-family: monospace;
+    }
+
+    .inv-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .inv-table th {
+      text-align: left;
+      padding: 8px 10px;
+      color: var(--text-sec);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+    .inv-table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .inv-table .num { text-align: right; }
+    .inv-table tfoot td {
+      padding: 10px 10px;
+      border-bottom: none;
+    }
+    .inv-table tfoot tr.total-row td {
+      border-top: 2px solid var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .inv-note {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--text-sec);
+      border-left: 3px solid var(--accent);
+    }
+
+    /* ── TOOLS ROW (below calculator) ── */
+    .tools-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .tool-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-sec);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-align: center;
+    }
+    .tool-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .tool-btn.print-btn { color: var(--green); border-color: #1e4a30; }
+    .tool-btn.print-btn:hover { background: #0f2a1a; border-color: var(--green); }
+
+    /* ── PLACEHOLDER STATE ── */
+    .placeholder-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-mute);
+    }
+    .placeholder-state .big-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      opacity: 0.4;
+    }
+    .placeholder-state p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .footer-author {
+      font-size: 0.8rem;
+      color: var(--text-mute);
+      text-align: center;
+    }
+    .footer-author a { color: var(--text-sec); }
+
+    .dh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #0F1B2D;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      border-radius: 99px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: opacity 0.18s, transform 0.12s;
+    }
+    .dh-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .dh-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ── PRINT ── */
+    @media print {
+      header, .hero, .calculator-grid, .tools-row, footer, .card-title { display: none !important; }
+      .invoice-section { display: block !important; }
+      .invoice-card { border: none; box-shadow: none; }
+      body { background: white; color: black; }
+      .invoice-header { background: #f5a623 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeUp 0.3s ease forwards; }
+
+    @keyframes pulse-accent {
+      0%   { box-shadow: 0 0 0 0 rgba(245,166,35,0.4); }
+      70%  { box-shadow: 0 0 0 10px rgba(245,166,35,0); }
+      100% { box-shadow: 0 0 0 0 rgba(245,166,35,0); }
+    }
+    .pulse { animation: pulse-accent 0.6s ease; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <span>₹ GST Calc</span>
+    <span class="logo-badge">FREE</span>
+  </div>
+  <div class="author-chip">
+    By <strong>Phulkeshwar Mahto</strong> &nbsp;·&nbsp; <a href="mailto:phulkeshwarmahto@gmail.com">phulkeshwarmahto@gmail.com</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">India GST Tool · FY 2025–26</div>
+  <h1>Calculate GST &amp; <span>Invoice Total</span><br>in Seconds</h1>
+  <p>Enter any amount, pick a GST rate — get CGST, SGST, IGST, and a print-ready invoice. No signup, no ads, completely free.</p>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="calculator-grid">
+
+    <!-- LEFT: INPUT CARD -->
+    <div class="card">
+      <div class="card-title">Invoice Details</div>
+
+      <!-- Calculation Type -->
+      <div class="field">
+        <label>Calculate</label>
+        <div class="toggle-row">
+          <button class="toggle-btn active" id="btn-add" onclick="setCalcType('add')">Add GST to amount</button>
+          <button class="toggle-btn" id="btn-extract" onclick="setCalcType('extract')">Extract GST from total</button>
+        </div>
+      </div>
+
+      <!-- GST Type -->
+      <div class="field">
+        <label>GST Type</label>
+        <div class="toggle-row">
+          <button class="toggle-btn active" id="btn-intra" onclick="setGSTType('intra')">Intra-state (CGST + SGST)</button>
+          <button class="toggle-btn" id="btn-inter" onclick="setGSTType('inter')">Inter-state (IGST)</button>
+        </div>
+      </div>
+
+      <!-- Amount -->
+      <div class="field">
+        <label id="amount-label">Base Amount (₹, excl. GST)</label>
+        <div class="prefix-wrap">
+          <span class="prefix">₹</span>
+          <input type="number" id="amount" placeholder="e.g. 10000" min="0" step="0.01" oninput="liveCalc()" />
+        </div>
+      </div>
+
+      <!-- GST Rate -->
+      <div class="field">
+        <label>GST Rate</label>
+        <div class="gst-rate-grid">
+          <button class="rate-btn" onclick="setRate(0)">0%</button>
+          <button class="rate-btn" onclick="setRate(0.1)">0.1%</button>
+          <button class="rate-btn" onclick="setRate(0.25)">0.25%</button>
+          <button class="rate-btn" onclick="setRate(3)">3%</button>
+          <button class="rate-btn" onclick="setRate(5)">5%</button>
+          <button class="rate-btn active" onclick="setRate(12)">12%</button>
+          <button class="rate-btn" onclick="setRate(18)">18%</button>
+          <button class="rate-btn" onclick="setRate(28)">28%</button>
+          <button class="rate-btn custom-rate-btn" onclick="focusCustom()">Custom</button>
+        </div>
+        <input type="number" id="custom-rate" placeholder="Enter custom %" min="0" max="100" step="0.01"
+               style="display:none; margin-top:8px;" oninput="liveCalc()" />
+      </div>
+
+      <!-- Item Description (for invoice) -->
+      <div class="field">
+        <label>Item / Service Description <span style="color:var(--text-mute)">(optional, for invoice)</span></label>
+        <input type="text" id="item-desc" placeholder="e.g. Web Development Services" oninput="liveCalc()" />
+      </div>
+
+      <!-- Seller Name -->
+      <div class="field">
+        <label>Seller Name <span style="color:var(--text-mute)">(optional)</span></label>
+        <input type="text" id="seller-name" placeholder="Your company / name" oninput="liveCalc()" />
+      </div>
+
+      <!-- Buyer Name -->
+      <div class="field">
+        <label>Buyer / Client Name <span style="color:var(--text-mute)">(optional)</span></label>
+        <input type="text" id="buyer-name" placeholder="Client company / name" oninput="liveCalc()" />
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calculate GST →</button>
+    </div>
+
+    <!-- RIGHT: RESULT CARD -->
+    <div class="card result-panel" id="result-panel">
+      <div class="card-title">Breakdown</div>
+
+      <!-- Placeholder -->
+      <div class="placeholder-state" id="placeholder">
+        <div class="big-icon">🧾</div>
+        <p>Enter an amount and hit <strong style="color:var(--text-sec)">Calculate GST</strong> to see the full breakdown here.</p>
+      </div>
+
+      <!-- Result content (hidden until calculated) -->
+      <div id="result-content" style="display:none">
+
+        <div class="result-main" id="result-main-box">
+          <div class="result-label" id="result-label">Total Invoice Amount</div>
+          <div class="result-amount" id="total-display">₹0.00</div>
+        </div>
+
+        <ul class="breakdown-list" id="breakdown-list"></ul>
+
+        <div class="tag-row" id="tag-row"></div>
+
+        <div class="tools-row">
+          <button class="tool-btn" onclick="resetAll()">↺ Reset</button>
+          <button class="tool-btn" onclick="copyResult()">⎘ Copy</button>
+          <button class="tool-btn print-btn" onclick="generateInvoice()">🖨 Invoice Preview</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVOICE PREVIEW -->
+  <div class="invoice-section" id="invoice-section">
+    <div class="card" style="padding:0">
+      <div style="padding:20px 24px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px">
+        <div class="card-title" style="margin:0">Invoice Preview</div>
+        <div class="tools-row" style="margin:0">
+          <button class="tool-btn" onclick="window.print()">🖨 Print</button>
+          <button class="tool-btn" onclick="closeInvoice()">✕ Close</button>
+        </div>
+      </div>
+      <div class="invoice-card" style="margin:16px">
+        <div class="invoice-header">
+          <div>
+            <h2>TAX INVOICE</h2>
+            <div class="inv-no" id="inv-number">INV-2025-001</div>
+          </div>
+          <div class="invoice-date" id="inv-date-block"></div>
+        </div>
+        <div class="invoice-body">
+          <div class="invoice-parties">
+            <div class="party-block">
+              <h4>Billed By</h4>
+              <p id="inv-seller">Your Company</p>
+              <div class="gstin">GSTIN: Not provided</div>
+            </div>
+            <div class="party-block" style="text-align:right">
+               <h4>Billed To</h4>
+              <p id="inv-buyer">Client Name</p>
+              <div class="gstin">GSTIN: Not provided</div>
+            </div>
+          </div>
+
+          <table class="inv-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>HSN/SAC</th>
+                <th>Qty</th>
+                <th class="num">Rate (₹)</th>
+                <th class="num">Taxable Amt (₹)</th>
+              </tr>
+            </thead>
+            <tbody id="inv-items"></tbody>
+            <tfoot id="inv-totals"></tfoot>
+          </table>
+
+          <div class="inv-note" id="inv-note"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-author">
+    Built by <strong>Phulkeshwar Mahto</strong> &nbsp;·&nbsp;
+    <a href="mailto:phulkeshwarmahto@gmail.com">phulkeshwarmahto@gmail.com</a>
+    &nbsp;·&nbsp; B.Tech CSE · NIAMT Ranchi · Founder, Garam Softwares
+  </p>
+  <a class="dh-btn" href="https://digitalheroesco.com" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    Built for Digital Heroes
+  </a>
+</footer>
+
+<script>
+  let calcType = 'add';
+  let gstType  = 'intra';
+  let rate     = 12;
+  let lastResult = null;
+
+  function setCalcType(t) {
+    calcType = t;
+    document.getElementById('btn-add').classList.toggle('active', t === 'add');
+    document.getElementById('btn-extract').classList.toggle('active', t === 'extract');
+    document.getElementById('amount-label').textContent =
+      t === 'add' ? 'Base Amount (₹, excl. GST)' : 'Total Amount (₹, incl. GST)';
+    liveCalc();
+  }
+
+  function setGSTType(t) {
+    gstType = t;
+    document.getElementById('btn-intra').classList.toggle('active', t === 'intra');
+    document.getElementById('btn-inter').classList.toggle('active', t === 'inter');
+    liveCalc();
+  }
+
+  function setRate(r) {
+    rate = r;
+    document.querySelectorAll('.rate-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.rate-btn:not(.custom-rate-btn)').forEach(b => {
+      if (parseFloat(b.textContent) === r) b.classList.add('active');
+    });
+    document.getElementById('custom-rate').style.display = 'none';
+    document.getElementById('custom-rate').value = '';
+    liveCalc();
+  }
+
+  function focusCustom() {
+    document.querySelectorAll('.rate-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.custom-rate-btn').classList.add('active');
+    const el = document.getElementById('custom-rate');
+    el.style.display = 'block';
+    el.focus();
+  }
+
+  document.getElementById('custom-rate').addEventListener('input', function() {
+    rate = parseFloat(this.value) || 0;
+    liveCalc();
+  });
+
+  function liveCalc() {
+    const amt = parseFloat(document.getElementById('amount').value);
+    if (!isNaN(amt) && amt > 0) calculate(true);
+  }
+
+  function calculate(silent = false) {
+    const rawAmt = parseFloat(document.getElementById('amount').value);
+    if (isNaN(rawAmt) || rawAmt <= 0) {
+      if (!silent) showError();
+      return;
+    }
+
+    const customVal = document.getElementById('custom-rate').value;
+    if (customVal !== '') rate = parseFloat(customVal) || 0;
+
+    let base, gstAmt, total;
+    if (calcType === 'add') {
+      base   = rawAmt;
+      gstAmt = base * rate / 100;
+      total  = base + gstAmt;
+    } else {
+      total  = rawAmt;
+      base   = total / (1 + rate / 100);
+      gstAmt = total - base;
+    }
+
+    let cgst = 0, sgst = 0, igst = 0;
+    if (gstType === 'intra') {
+      cgst = sgst = gstAmt / 2;
+    } else {
+      igst = gstAmt;
+    }
+
+    lastResult = { base, gstAmt, total, cgst, sgst, igst, rate, gstType, calcType };
+    renderResult(lastResult, silent);
+  }
+
+  function renderResult(r, silent) {
+    document.getElementById('placeholder').style.display = 'none';
+    const content = document.getElementById('result-content');
+    content.style.display = 'block';
+    if (!silent) content.classList.remove('animate-in'), void content.offsetWidth, content.classList.add('animate-in');
+
+    document.getElementById('total-display').textContent = '₹' + r.total.toFixed(2);
+    document.getElementById('result-label').textContent =
+      r.calcType === 'add' ? 'Total Invoice Amount (incl. GST)' : 'Base Amount (excl. GST)';
+
+    const list = document.getElementById('breakdown-list');
+    list.innerHTML = '';
+
+    const rows = [
+      { label: r.calcType === 'add' ? 'Base Amount' : 'You Entered (incl. GST)', value: r.calcType === 'add' ? r.base : r.total },
+      { label: `GST @ ${r.rate}%`, value: r.gstAmt },
+    ];
+
+    if (r.gstType === 'intra') {
+      rows.push({ label: `CGST @ ${r.rate/2}%`, value: r.cgst });
+      rows.push({ label: `SGST @ ${r.rate/2}%`, value: r.sgst });
+    } else {
+      rows.push({ label: `IGST @ ${r.rate}%`, value: r.igst });
+    }
+
+    rows.push({
+      label: r.calcType === 'add' ? 'Total Invoice (incl. GST)' : 'Base Amount (excl. GST)',
+      value: r.calcType === 'add' ? r.total : r.base,
+      highlight: true
+    });
+
+    rows.forEach(row => {
+      const li = document.createElement('li');
+      li.className = 'breakdown-item' + (row.highlight ? ' highlight' : '');
+      li.innerHTML = `<span class="b-label">${row.label}</span><span class="b-value">₹${row.value.toFixed(2)}</span>`;
+      list.appendChild(li);
+    });
+
+    const tagRow = document.getElementById('tag-row');
+    tagRow.innerHTML = '';
+    const tags = [
+      { label: r.gstType === 'intra' ? 'CGST + SGST' : 'IGST', active: true },
+      { label: `GST ${r.rate}%`, active: true },
+      { label: r.calcType === 'add' ? 'Exclusive' : 'Inclusive', active: false },
+      { label: 'FY 2025–26', active: false },
+    ];
+    tags.forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'tag' + (t.active ? ' active-tag' : '');
+      span.textContent = t.label;
+      tagRow.appendChild(span);
+    });
+
+    const box = document.getElementById('result-main-box');
+    box.classList.remove('pulse');
+    void box.offsetWidth;
+    box.classList.add('pulse');
+  }
+
+  function generateInvoice() {
+    if (!lastResult) { calculate(); if (!lastResult) return; }
+
+    const r = lastResult;
+    const seller = document.getElementById('seller-name').value || 'Your Company';
+    const buyer  = document.getElementById('buyer-name').value  || 'Client Name';
+    const desc   = document.getElementById('item-desc').value   || 'Professional Services';
+
+    document.getElementById('inv-seller').textContent = seller;
+    document.getElementById('inv-buyer').textContent  = buyer;
+
+    const now = new Date();
+    const invNo = 'INV-' + now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+    document.getElementById('inv-number').textContent = invNo;
+    document.getElementById('inv-date-block').innerHTML =
+      `<div><strong>Date:</strong> ${now.toLocaleDateString('en-IN', {day:'2-digit',month:'long',year:'numeric'})}</div>
+       <div style="margin-top:4px"><strong>Due Date:</strong> ${new Date(now.getTime()+30*86400000).toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'})}</div>`;
+
+    const tbody = document.getElementById('inv-items');
+    tbody.innerHTML = `
+      <tr>
+        <td>1</td>
+        <td>${desc}</td>
+        <td>—</td>
+        <td>1</td>
+        <td class="num">₹${r.base.toFixed(2)}</td>
+        <td class="num">₹${r.base.toFixed(2)}</td>
+      </tr>`;
+
+    const tfoot = document.getElementById('inv-totals');
+    let taxRows = '';
+    if (r.gstType === 'intra') {
+      taxRows = `
+        <tr><td colspan="5" style="text-align:right;color:var(--text-sec);font-size:0.82rem">CGST @ ${r.rate/2}%</td><td class="num">₹${r.cgst.toFixed(2)}</td></tr>
+        <tr><td colspan="5" style="text-align:right;color:var(--text-sec);font-size:0.82rem">SGST @ ${r.rate/2}%</td><td class="num">₹${r.sgst.toFixed(2)}</td></tr>`;
+    } else {
+      taxRows = `<tr><td colspan="5" style="text-align:right;color:var(--text-sec);font-size:0.82rem">IGST @ ${r.rate}%</td><td class="num">₹${r.igst.toFixed(2)}</td></tr>`;
+    }
+    tfoot.innerHTML = `
+      <tr><td colspan="5" style="text-align:right;color:var(--text-sec);font-size:0.82rem">Sub-Total</td><td class="num">₹${r.base.toFixed(2)}</td></tr>
+      ${taxRows}
+      <tr class="total-row"><td colspan="5" style="text-align:right">TOTAL (INR)</td><td class="num">₹${r.total.toFixed(2)}</td></tr>`;
+
+    const inWords = numberToWords(r.total);
+    document.getElementById('inv-note').innerHTML =
+      `<strong>Amount in words:</strong> Rupees ${inWords} Only.<br>
+       <span style="margin-top:4px;display:block">This is a computer-generated invoice. No physical signature required.</span>`;
+
+    const sec = document.getElementById('invoice-section');
+    sec.classList.add('visible');
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function closeInvoice() {
+    document.getElementById('invoice-section').classList.remove('visible');
+  }
+
+  function showError() {
+    const el = document.getElementById('amount');
+    el.style.borderColor = '#ef4444';
+    el.focus();
+    setTimeout(() => el.style.borderColor = '', 1200);
+  }
+
+  function resetAll() {
+    document.getElementById('amount').value = '';
+    document.getElementById('item-desc').value = '';
+    document.getElementById('seller-name').value = '';
+    document.getElementById('buyer-name').value = '';
+    document.getElementById('custom-rate').value = '';
+    document.getElementById('custom-rate').style.display = 'none';
+    document.getElementById('result-content').style.display = 'none';
+    document.getElementById('placeholder').style.display = 'block';
+    document.getElementById('invoice-section').classList.remove('visible');
+    setRate(12);
+    lastResult = null;
+  }
+
+  function copyResult() {
+    if (!lastResult) return;
+    const r = lastResult;
+    let txt = `GST Calculation\n${'─'.repeat(28)}\n`;
+    txt += `Base Amount:   ₹${r.base.toFixed(2)}\n`;
+    txt += `GST @ ${r.rate}%:   ₹${r.gstAmt.toFixed(2)}\n`;
+    if (r.gstType === 'intra') {
+      txt += `CGST @ ${r.rate/2}%: ₹${r.cgst.toFixed(2)}\n`;
+      txt += `SGST @ ${r.rate/2}%: ₹${r.sgst.toFixed(2)}\n`;
+    } else {
+      txt += `IGST @ ${r.rate}%:  ₹${r.igst.toFixed(2)}\n`;
+    }
+    txt += `${'─'.repeat(28)}\nTotal:         ₹${r.total.toFixed(2)}\n`;
+    txt += `\nCalculated at gstcalc.vercel.app`;
+    navigator.clipboard.writeText(txt).then(() => {
+      const btn = document.querySelector('.tool-btn:nth-child(2)');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = '⎘ Copy', 2000);
+    });
+  }
+
+  function numberToWords(n) {
+    const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
+                  'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+    const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+    function twoDigit(n) {
+      if (n < 20) return ones[n];
+      return tens[Math.floor(n/10)] + (n%10 ? ' ' + ones[n%10] : '');
+    }
+    function threeDigit(n) {
+      if (n >= 100) return ones[Math.floor(n/100)] + ' Hundred' + (n%100 ? ' ' + twoDigit(n%100) : '');
+      return twoDigit(n);
+    }
+    let num = Math.floor(n);
+    const paise = Math.round((n - num) * 100);
+    if (num === 0) return 'Zero';
+    let result = '';
+    if (num >= 10000000) { result += threeDigit(Math.floor(num/10000000)) + ' Crore '; num %= 10000000; }
+    if (num >= 100000)   { result += threeDigit(Math.floor(num/100000))   + ' Lakh ';  num %= 100000;   }
+    if (num >= 1000)     { result += threeDigit(Math.floor(num/1000))     + ' Thousand '; num %= 1000;  }
+    if (num > 0)         { result += threeDigit(num); }
+    if (paise > 0) result += ' and ' + twoDigit(paise) + ' Paise';
+    return result.trim();
+  }
+
+  setRate(12);
+</script>
+</body>
+</html>
