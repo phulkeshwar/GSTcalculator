@@ -845,3 +845,27 @@ footer {
   padding-bottom: 16px;
 }
 
+/* ── GITHUB BUTTON NAVBAR COMPONENT ── */
+.github-btn {
+  background: var(--surface2, rgba(255, 255, 255, 0.05)) !important;
+  color: var(--text, #ffffff) !important;
+  border: 1px solid var(--border, #243650) !important;
+  padding: 6px 14px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  border-radius: 99px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: all 0.2s ease !important;
+  font-family: inherit !important;
+  text-decoration: none !important;
+}
+
+.github-btn:hover {
+  border-color: var(--accent, #3b82f6) !important;
+  background: var(--surface3, rgba(255, 255, 255, 0.1)) !important;
+  color: var(--accent, #3b82f6) !important;
+}
+
