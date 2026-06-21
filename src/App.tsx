@@ -669,7 +669,7 @@ export default function App() {
 
                 <div className="tag-row">
                   <span className="tag active-tag">
-                    {result.isExportLUT ? 'LUT EXPORT' : result.gstType === 'intra' ? 'INTRADOMESTIC (CGST+SGST)' : 'INTERSTATE (IGST)'}
+                    {result.isExportLUT ? 'LUT EXPORT' : result.gstType === 'intra' ? 'INTRA (CGST+SGST)' : 'INTER (IGST)'}
                   </span>
                   <span className="tag">FY 2025–26</span>
                   <span className="tag">{result.items.length} Items</span>
