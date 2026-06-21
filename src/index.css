@@ -40,8 +40,15 @@ body {
 
 /* ── HEADER ── */
 header {
-  padding: 20px 24px;
   border-bottom: 1px solid var(--border);
+  width: 100%;
+}
+
+.header-container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -92,6 +99,9 @@ header {
 .hero {
   text-align: center;
   padding: 56px 24px 40px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .hero-eyebrow {
@@ -129,19 +139,18 @@ header {
   flex: 1;
   max-width: 1280px;
   width: 100%;
-  align-items: center;
   margin: 0 auto;
-  padding: 0 40px 60px;
+  padding: 0 24px 60px;
 }
 
 .calculator-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 40px;
-  align-items: center;
+  grid-template-columns: 0.88fr 1.12fr;
+  gap: 20px;
+  align-items: start;
 }
 
-@media (max-width: 680px) {
+@media (max-width: 900px) {
   .calculator-grid {
     grid-template-columns: 1fr;
   }
@@ -716,9 +725,9 @@ footer {
   border: 1.5px solid var(--border) !important;
   border-radius: 6px !important;
   color: var(--text) !important;
-  padding: 8px 10px !important;
+  padding: 8px 8px !important;
   font-family: 'Space Grotesk', sans-serif !important;
-  font-size: 0.88rem !important;
+  font-size: 0.85rem !important;
   width: 100%;
   outline: none;
 }
