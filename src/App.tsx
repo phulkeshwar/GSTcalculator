@@ -471,9 +471,9 @@ export default function App() {
                   <tr>
                     <th style={{ minWidth: '130px' }}>Desc</th>
                     <th style={{ width: '95px' }}>HSN</th>
-                    <th style={{ width: '45px' }}>Qty</th>
-                    <th style={{ width: '80px' }}>Rate (₹)</th>
-                    <th style={{ width: '70px' }}>Tax %</th>
+                    <th style={{ width: '55px' }}>Qty</th>
+                    <th style={{ width: '85px' }}>Rate (₹)</th>
+                    <th style={{ width: '75px' }}>Tax %</th>
                     <th style={{ width: '30px' }}></th>
                   </tr>
                 </thead>

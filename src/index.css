@@ -145,7 +145,7 @@ header {
 
 .calculator-grid {
   display: grid;
-  grid-template-columns: 0.88fr 1.12fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
   align-items: start;
 }
@@ -730,6 +730,16 @@ footer {
   font-size: 0.85rem !important;
   width: 100%;
   outline: none;
+}
+
+/* Hide number input spin arrows */
+.item-row-input::-webkit-outer-spin-button,
+.item-row-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.item-row-input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 .item-row-input:focus {
