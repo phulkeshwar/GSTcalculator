@@ -464,8 +464,8 @@ export default function App() {
               <span className="checkbox-label">Mark as Export under LUT (Letter of Undertaking) - 0% Tax</span>
             </label>
 
-            {/* Itemized Grid Table */}
-            <div style={{ overflowX: 'auto', width: '100%' }}>
+            {/* Itemized Grid Table - Desktop */}
+            <div className="desktop-table-view">
               <table className="item-table">
                 <thead>
                   <tr>
@@ -550,6 +550,93 @@ export default function App() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Itemized Grid - Mobile Cards */}
+            <div className="mobile-cards-view">
+              {items.map((item, index) => (
+                <div key={item.id} className="mobile-item-card">
+                  <div className="mobile-item-header">
+                    <span className="mobile-item-title">Item #{index + 1}</span>
+                    <button
+                      type="button"
+                      className="btn-remove-card"
+                      onClick={() => removeItemRow(item.id)}
+                    >
+                      ✕ Remove
+                    </button>
+                  </div>
+                  
+                  <div className="field">
+                    <label>Description</label>
+                    <input
+                      type="text"
+                      className="item-row-input"
+                      placeholder="e.g. Software Consulting"
+                      value={item.desc}
+                      onChange={(e) => updateItemCell(item.id, 'desc', e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mobile-card-grid">
+                    <div className="field">
+                      <label>HSN</label>
+                      <select
+                        className="item-row-input"
+                        value={item.hsn}
+                        onChange={(e) => updateItemCell(item.id, 'hsn', e.target.value)}
+                      >
+                        <option value="">Custom...</option>
+                        {HSN_DIRECTORY.map((h) => (
+                          <option key={h.code} value={h.code}>
+                            {h.code} ({h.desc})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    
+                    <div className="field">
+                      <label>Qty</label>
+                      <input
+                        type="number"
+                        className="item-row-input"
+                        min="1"
+                        placeholder="1"
+                        value={item.qty || ''}
+                        onChange={(e) => updateItemCell(item.id, 'qty', parseInt(e.target.value) || 0)}
+                      />
+                    </div>
+
+                    <div className="field">
+                      <label>Rate (₹)</label>
+                      <input
+                        type="number"
+                        className="item-row-input"
+                        min="0"
+                        placeholder="Rate"
+                        value={item.rate || ''}
+                        onChange={(e) => updateItemCell(item.id, 'rate', parseFloat(e.target.value) || 0)}
+                      />
+                    </div>
+
+                    <div className="field">
+                      <label>Tax %</label>
+                      <select
+                        className="item-row-input"
+                        disabled={isExportLUT}
+                        value={item.gstRate}
+                        onChange={(e) => updateItemCell(item.id, 'gstRate', parseInt(e.target.value) || 0)}
+                      >
+                        <option value={0}>0%</option>
+                        <option value={5}>5%</option>
+                        <option value={12}>12%</option>
+                        <option value={18}>18%</option>
+                        <option value={28}>28%</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
 
             <button type="button" className="btn-add-item" onClick={addItemRow}>
